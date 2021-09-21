@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Title | fastpages</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Title" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="An easy to use blogging platform with support for Jupyter Notebooks." />
+<meta property="og:description" content="An easy to use blogging platform with support for Jupyter Notebooks." />
+<link rel="canonical" href="https://meinkappa.github.io/blog/2021/09/21/NLP-in-FastAI.html" />
+<meta property="og:url" content="https://meinkappa.github.io/blog/2021/09/21/NLP-in-FastAI.html" />
+<meta property="og:site_name" content="fastpages" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-09-21T00:00:00-05:00" />
+<script type="application/ld+json">
+{"datePublished":"2021-09-21T00:00:00-05:00","url":"https://meinkappa.github.io/blog/2021/09/21/NLP-in-FastAI.html","@type":"BlogPosting","headline":"Title","dateModified":"2021-09-21T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://meinkappa.github.io/blog/2021/09/21/NLP-in-FastAI.html"},"description":"An easy to use blogging platform with support for Jupyter Notebooks.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://meinkappa.github.io/blog/feed.xml" title="fastpages" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">fastpages</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/blog/about/">About Me</a><a class="page-link" href="/blog/search/">Search</a><a class="page-link" href="/blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Title</h1><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-09-21T00:00:00-05:00" itemprop="datePublished">
+        Sep 21, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      11 min read
+    
+</span></p>
+
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/Meinkappa/blog/tree/master/_notebooks/2021-09-21-NLP-in-FastAI.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/blog/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/Meinkappa/blog/master?filepath=_notebooks%2F2021-09-21-NLP-in-FastAI.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/blog/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/Meinkappa/blog/blob/master/_notebooks/2021-09-21-NLP-in-FastAI.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/blog/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2021-09-21-NLP-in-FastAI.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We have been exploring computer vision with fastai and pytorch. Today, we will go over something different, which is natural language processing (NLP). We will briefly look at how to train NLP with FastAI by making a simple movie review classification using FastAI.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">Uqq</span> <span class="n">fastbook</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>     |████████████████████████████████| 720 kB 5.5 MB/s 
+     |████████████████████████████████| 186 kB 42.4 MB/s 
+     |████████████████████████████████| 46 kB 2.4 MB/s 
+     |████████████████████████████████| 1.2 MB 35.5 MB/s 
+     |████████████████████████████████| 56 kB 3.4 MB/s 
+     |████████████████████████████████| 51 kB 286 kB/s 
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="kn">from</span> <span class="nn">fastai.text.all</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Images are composed of pixels, which are numbers. On the other hand, languages are not numbers in nature. In order to train our model with deep learning, we have to turn those words into computable numbers. So, we turn a sequence of words into a sequence of numbers. Because we are using FastAI, texts are converted into numbers automatically if use <code>TextBlock</code>.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">path</span> <span class="o">=</span> <span class="n">untar_data</span><span class="p">(</span><span class="n">URLs</span><span class="o">.</span><span class="n">IMDB</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+
+    <div>
+        <style>
+            /* Turns off some styling */
+            progress {
+                /* gets rid of default border in Firefox and Opera. */
+                border: none;
+                /* Needs to be in here for Safari polyfill so background images work as expected. */
+                background-size: auto;
+            }
+            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+                background: #F44336;
+            }
+        </style>
+      <progress value="144441344" class="" max="144440600" style="width:300px; height:20px; vertical-align: middle;"></progress>
+      100.00% [144441344/144440600 00:03&lt;00:00]
+    </div>
+    
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">dls_clas</span> <span class="o">=</span> <span class="n">DataBlock</span><span class="p">(</span>
+    <span class="n">blocks</span><span class="o">=</span><span class="p">(</span><span class="n">TextBlock</span><span class="o">.</span><span class="n">from_folder</span><span class="p">(</span><span class="n">path</span><span class="p">),</span> <span class="n">CategoryBlock</span><span class="p">),</span>
+    <span class="n">get_y</span><span class="o">=</span><span class="n">parent_label</span><span class="p">,</span>
+    <span class="n">get_items</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="n">get_text_files</span><span class="p">,</span> <span class="n">folders</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">]),</span>
+    <span class="n">splitter</span><span class="o">=</span><span class="n">GrandparentSplitter</span><span class="p">(</span><span class="n">valid_name</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">dataloaders</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">bs</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">seq_len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As you can see, it takes a while (it took me about 5 mins on colab) to transform words into numbers because FastAI has to read through all the words and count the frequencies. Good news is that we do not have to go through that process again as FastAI saved the result in a temporary file.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now, we have a datablock. We can use it as the same way as we used before. Let's look at a each batch. As we can see, each item has a label of <code>pos</code> or <code>neg</code>. We will train a model that reads a movie review and figures out whether it is a positive review or a negative review.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">dls_clas</span><span class="o">.</span><span class="n">show_batch</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>text</th>
+      <th>category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>xxbos xxmaj match 1 : xxmaj tag xxmaj team xxmaj table xxmaj match xxmaj bubba xxmaj ray and xxmaj spike xxmaj dudley vs xxmaj eddie xxmaj guerrero and xxmaj chris xxmaj benoit xxmaj bubba xxmaj ray and xxmaj spike xxmaj dudley started things off with a xxmaj tag xxmaj team xxmaj table xxmaj match against xxmaj eddie xxmaj guerrero and xxmaj chris xxmaj benoit . xxmaj according to the rules of the match , both opponents have to go through tables in order to get the win . xxmaj benoit and xxmaj guerrero heated up early on by taking turns hammering first xxmaj spike and then xxmaj bubba xxmaj ray . a xxmaj german xxunk by xxmaj benoit to xxmaj bubba took the wind out of the xxmaj dudley brother . xxmaj spike tried to help his brother , but the referee restrained him while xxmaj benoit and xxmaj guerrero</td>
+      <td>pos</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>xxbos * * attention xxmaj spoilers * * \n\n xxmaj first of all , let me say that xxmaj rob xxmaj roy is one of the best films of the 90 's . xxmaj it was an amazing achievement for all those involved , especially the acting of xxmaj liam xxmaj neeson , xxmaj jessica xxmaj lange , xxmaj john xxmaj hurt , xxmaj brian xxmaj cox , and xxmaj tim xxmaj roth . xxmaj michael xxmaj canton xxmaj jones painted a wonderful portrait of the honor and dishonor that men can represent in themselves . xxmaj but alas … \n\n it constantly , and unfairly gets compared to " braveheart " . xxmaj these are two entirely different films , probably only similar in the fact that they are both about xxmaj scots in historical xxmaj scotland . xxmaj yet , this comparison frequently bothers me because it seems</td>
+      <td>pos</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>xxbos xxmaj by now you 've probably heard a bit about the new xxmaj disney dub of xxmaj miyazaki 's classic film , xxmaj laputa : xxmaj castle xxmaj in xxmaj the xxmaj sky . xxmaj during late summer of 1998 , xxmaj disney released " kiki 's xxmaj delivery xxmaj service " on video which included a preview of the xxmaj laputa dub saying it was due out in " 1 xxrep 3 9 " . xxmaj it 's obviously way past that year now , but the dub has been finally completed . xxmaj and it 's not " laputa : xxmaj castle xxmaj in xxmaj the xxmaj sky " , just " castle xxmaj in xxmaj the xxmaj sky " for the dub , since xxmaj laputa is not such a nice word in xxmaj spanish ( even though they use the word xxmaj laputa many times</td>
+      <td>pos</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>xxbos xxmaj warning : xxmaj does contain spoilers . \n\n xxmaj open xxmaj your xxmaj eyes \n\n xxmaj if you have not seen this film and plan on doing so , just stop reading here and take my word for it . xxmaj you have to see this film . i have seen it four times so far and i still have n't made up my mind as to what exactly happened in the film . xxmaj that is all i am going to say because if you have not seen this film , then stop reading right now . \n\n xxmaj if you are still reading then i am going to pose some questions to you and maybe if anyone has any answers you can email me and let me know what you think . \n\n i remember my xxmaj grade 11 xxmaj english teacher quite well . xxmaj</td>
+      <td>pos</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>xxbos xxmaj polish film maker xxmaj walerian xxmaj borowczyk 's xxmaj la xxmaj bête ( french , 1975 , aka xxmaj the xxmaj beast ) is among the most controversial and brave films ever made and a very excellent one too . xxmaj this film tells everything that 's generally been hidden and denied about our nature and our sexual nature in particular with the symbolism and silence of its images . xxmaj the images may look wild , perverse , " sick " or exciting , but they are all in relation with the lastly mentioned . xxmaj sex , desire and death are very strong and primary things and dominate all the flesh that has a human soul inside it . xxmaj they interest and xxunk us so powerfully ( and by our nature ) that they are considered scary , unacceptable and something too wild to be</td>
+      <td>pos</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>xxbos xxmaj berlin - born in 1942 xxmaj margarethe von xxmaj trotta was an actress and now she is a very important director and writer . xxmaj she has been described , perhaps even unfairly caricatured , as a director whose commitment to bringing a woman 's sensibility to the screen outweighs her artistic strengths . " rosenstrasse , " which has garnered mixed and even strange reviews ( the xxmaj new xxmaj york xxmaj times article was one of the most negatively aggressive reviews xxmaj i 've ever read in that paper ) is not a perfect film . xxmaj it is a fine movie and a testament to a rare xxunk of successful opposition to the genocidal xxmaj nazi regime by , of all peoples , generically powerless xxmaj germans demonstrating in a xxmaj berlin street . \n\n xxmaj co - writer von xxmaj trotta uses the actual</td>
+      <td>pos</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>xxbos xxmaj okay , so xxmaj i 'm not a big video game buff , but was the game xxmaj house of the xxmaj dead really famous enough to make a movie from ? xxmaj sure , they went as far as to actually put in quick video game clips throughout the movie , as though justifying any particular scene of violence , but there are dozens and dozens of games that look exactly the same , with the hand in the bottom on the screen , supposedly your own , holding whatever weapon and goo - ing all kinds of aliens or walking dead or snipers or whatever the case may be . \n\n xxmaj it 's an interesting premise in xxmaj house of the xxmaj dead , with a lot of college kids ( loaded college kids , as it were , kids who are able to pay</td>
+      <td>neg</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>xxbos xxmaj jim xxmaj carrey is back to much the same role that he played in xxmaj the xxmaj mask , a timid guy who is trying to get ahead in the world but who seems to be plagued with bad luck . xxmaj even when he tries to help a homeless guy from being harassed by a bunch of hoodlums ( and of course they have to be xxmaj mexican , obviously ) , his good will towards his fellow man backfires . xxmaj in that case , it was n't too hard to predict that he was about to have a handful of angry hoodlums , but i like that the movie suggests that things like that should n't be ignored . xxmaj i 'm reminded of the episode of xxmaj michael xxmaj moore 's brilliant xxmaj the xxmaj awful xxmaj truth , when they had a man</td>
+      <td>pos</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>xxbos i have never seen any of xxmaj spike xxmaj lee 's prior films , as their trailers never caught my interest . i have seen , and admire xxmaj denzel xxmaj washington , and xxmaj jodie xxmaj foster 's work , and have several of their dvds . i was , however , entirely disappointed with this movie . xxmaj if this film is any indication of xxmaj spike xxmaj lee 's ability as a director , my advice would be to " get a job " , and stop wasting the time and talent of others . \n\n i wonder if some of the other imdb commentators watched the same movie that xxmaj i 'd seen . i can only assume , from their sappy lovelorn reviews , that their adoration of xxmaj spike xxmaj lee has blinded them to the banality of this piece of work .</td>
+      <td>neg</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's make a model with <code>text_classifier_learner</code> and see how it trains.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">learn</span> <span class="o">=</span> <span class="n">text_classifier_learner</span><span class="p">(</span><span class="n">dls_clas</span><span class="p">,</span> 
+                                <span class="n">AWD_LSTM</span><span class="p">,</span> 
+                                <span class="n">drop_mult</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                                <span class="n">metrics</span><span class="o">=</span><span class="n">accuracy</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+
+    <div>
+        <style>
+            /* Turns off some styling */
+            progress {
+                /* gets rid of default border in Firefox and Opera. */
+                border: none;
+                /* Needs to be in here for Safari polyfill so background images work as expected. */
+                background-size: auto;
+            }
+            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+                background: #F44336;
+            }
+        </style>
+      <progress value="105070592" class="" max="105067061" style="width:300px; height:20px; vertical-align: middle;"></progress>
+      100.00% [105070592/105067061 00:05&lt;00:00]
+    </div>
+    
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">lr_find</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>SuggestedLRs(valley=0.002511886414140463)</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+" />
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>accuracy</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.453829</td>
+      <td>0.385983</td>
+      <td>0.828360</td>
+      <td>07:43</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0.432187</td>
+      <td>0.369330</td>
+      <td>0.836160</td>
+      <td>07:43</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>0.413031</td>
+      <td>0.361472</td>
+      <td>0.841440</td>
+      <td>07:43</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>It is training well. Let's train a bit more.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>accuracy</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.415325</td>
+      <td>0.356431</td>
+      <td>0.844840</td>
+      <td>07:43</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0.430957</td>
+      <td>0.368306</td>
+      <td>0.838840</td>
+      <td>07:42</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>0.424710</td>
+      <td>0.353693</td>
+      <td>0.846600</td>
+      <td>07:43</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0.404202</td>
+      <td>0.342196</td>
+      <td>0.851920</td>
+      <td>07:44</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0.401973</td>
+      <td>0.343825</td>
+      <td>0.850280</td>
+      <td>07:43</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's try our input and see whether it can figure out my movie reviews.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s1">&#39;This movie is awsome.&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(&#39;pos&#39;, tensor(1), tensor([0.0855, 0.9145]))</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s1">&#39;Frodo is very brave. He managed to destroy the ring.&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(&#39;pos&#39;, tensor(1), tensor([0.3413, 0.6587]))</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s1">&#39;Most people would love this movie because of its awsome computer graphics, but I did not like it.&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(&#39;neg&#39;, tensor(0), tensor([0.6328, 0.3672]))</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This seems good. Let's try setences that do not relate to movies. See what it does.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s1">&#39;I hate my shoes.&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(&#39;neg&#39;, tensor(0), tensor([0.6695, 0.3305]))</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s1">&#39;We have been exploring computer vision with fastai and pytorch.&#39;</span> <span class="o">+</span> 
+              <span class="s1">&#39;Today, we will go over something different, which is natural &#39;</span> <span class="o">+</span>
+              <span class="s1">&#39;language processing (NLP). We will briefly look at how to train&#39;</span> <span class="o">+</span>
+              <span class="s1">&#39;NLP with FastAI by making a simple movie review classification using FastAI.&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(&#39;pos&#39;, tensor(1), tensor([0.0799, 0.9201]))</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Not only is our model able to classify movie reviews, but also general tone of the texts. In other words, our model has a "gut feeling" now. It knows when someone is happy or mad in a fundamental level. This is very amazing for a model that we trained for about an hour. Try to type something in and see for yourself!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We were able to reach 85% accuracy with very little code and time. We can do better if we train our train our model on the whole IMDB dataset to just get to know the vocabulary before going into a classification problem. We will do that next time by digging deeper into what is going on under the hood.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><a class="u-url" href="/blog/2021/09/21/NLP-in-FastAI.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>An easy to use blogging platform with support for Jupyter Notebooks.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/fastai" title="fastai"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/fastdotai" title="fastdotai"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
